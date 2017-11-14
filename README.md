@@ -1,12 +1,3 @@
-# DfE Express Boilerplate application
+# DfE migrations jobs client
 
-This is a starting point for node applications, it included the basics needed to setup a Web application or API. 
-
-### Default setting for:
-
-- ESLint
-- Testing (Jest)
-- Project structure
-- Express Layout
-- Express Middleware
-
+Client package for sending jobs related to migration admin
