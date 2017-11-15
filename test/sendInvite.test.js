@@ -51,7 +51,7 @@ describe('when sending an invitation job', () => {
     await client.sendInvite(email, firstName, lastName, services, oldUsername, oldPassword, oldSalt);
 
     expect(queueCreate.mock.calls.length).toBe(1);
-    expect(queueCreate.mock.calls[0][0]).toBe('migationinvite_v1');
+    expect(queueCreate.mock.calls[0][0]).toBe('migrationinvite_v1');
   });
 
   it('then it should create the job with supplied data', async () => {
