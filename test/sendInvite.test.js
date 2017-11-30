@@ -8,6 +8,7 @@ const services = [];
 const oldUsername = 'fsdjkhsf';
 const oldPassword = 'sfuinw';
 const oldSalt = 'fwfnejwnkf';
+const tokenSerialNumber = '11651';
 
 describe('when sending an invitation job', () => {
   let createQueue;
@@ -41,21 +42,21 @@ describe('when sending an invitation job', () => {
   });
 
   it('then it should queue to the configured endpoint', async () => {
-    await client.sendInvite(email, firstName, lastName, services, oldUsername, oldPassword, oldSalt);
+    await client.sendInvite(email, firstName, lastName, services, oldUsername, oldPassword, oldSalt, tokenSerialNumber);
 
     expect(createQueue.mock.calls.length).toBe(1);
     expect(createQueue.mock.calls[0][0].redis).toBe('connection-string');
   });
 
   it('then it should create a migationinvite_v1 job', async () => {
-    await client.sendInvite(email, firstName, lastName, services, oldUsername, oldPassword, oldSalt);
+    await client.sendInvite(email, firstName, lastName, services, oldUsername, oldPassword, oldSalt, tokenSerialNumber);
 
     expect(queueCreate.mock.calls.length).toBe(1);
     expect(queueCreate.mock.calls[0][0]).toBe('migrationinvite_v1');
   });
 
   it('then it should create the job with supplied data', async () => {
-    await client.sendInvite(email, firstName, lastName, services, oldUsername, oldPassword, oldSalt);
+    await client.sendInvite(email, firstName, lastName, services, oldUsername, oldPassword, oldSalt, tokenSerialNumber);
 
     expect(queueCreate.mock.calls[0][1]).toMatchObject({
       email,
@@ -66,12 +67,13 @@ describe('when sending an invitation job', () => {
       username: oldUsername,
         password: oldPassword,
         salt: oldSalt,
+        tokenSerialNumber,
     },
     });
   });
 
   it('then it should save the job', async () => {
-    await client.sendInvite(email, firstName, lastName, services, oldUsername, oldPassword, oldSalt);
+    await client.sendInvite(email, firstName, lastName, services, oldUsername, oldPassword, oldSalt, tokenSerialNumber);
 
     expect(jobSave.mock.calls.length).toBe(1);
   });
@@ -82,7 +84,7 @@ describe('when sending an invitation job', () => {
     });
 
     try {
-      await client.sendInvite(email, firstName, lastName, services, oldUsername, oldPassword, oldSalt);
+      await client.sendInvite(email, firstName, lastName, services, oldUsername, oldPassword, oldSalt, tokenSerialNumber);
       throw new Error('No error thrown');
     } catch (e) {
       expect(e.message).toBe('some error');
